@@ -1,29 +1,28 @@
 import 'package:flutter/material.dart';
-import 'package:placebook/models/place.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:placebook/providers/user_places.dart';
 
-class NewPlace extends StatefulWidget {
-  const NewPlace({super.key, required this.addPlace});
-
-  final void Function(Place place) addPlace;
+class NewPlace extends ConsumerStatefulWidget {
+  const NewPlace({super.key});
 
   @override
-  State<NewPlace> createState() => _NewPlaceState();
+  ConsumerState<NewPlace> createState() => _NewPlaceState();
 }
 
-class _NewPlaceState extends State<NewPlace> {
+class _NewPlaceState extends ConsumerState<NewPlace> {
+  final titleController = TextEditingController();
+
+  void savePlace() {
+    final enteredTitle = titleController.text.trim();
+
+    if (enteredTitle.isEmpty) return;
+
+    ref.read(userPlaceProvider.notifier).addPlace(enteredTitle);
+    Navigator.of(context).pop();
+  }
+
   @override
   Widget build(BuildContext context) {
-    final titleController = TextEditingController();
-
-    void savePlace() {
-      final enteredTitle = titleController.text.trim();
-
-      if (enteredTitle.isEmpty) return;
-
-      widget.addPlace(Place(title: enteredTitle));
-      Navigator.of(context).pop();
-    }
-
     return Scaffold(
       appBar: AppBar(title: Text("Add New Place")),
       body: Padding(

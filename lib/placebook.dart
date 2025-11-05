@@ -1,27 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:placebook/models/place.dart';
+import 'package:placebook/providers/user_places.dart';
 
 import 'package:placebook/screens/new_place.dart';
 import 'package:placebook/screens/place_details.dart';
 
-class Placebook extends StatefulWidget {
+class Placebook extends ConsumerStatefulWidget {
   const Placebook({super.key});
 
   @override
-  State<Placebook> createState() => _PlacebookState();
+  ConsumerState<Placebook> createState() => _PlacebookState();
 }
 
-class _PlacebookState extends State<Placebook> {
-  final List<Place> places = [];
-
-  void addPlace(Place place) {
-    setState(() {
-      places.add(place);
-    });
-  }
-
+class _PlacebookState extends ConsumerState<Placebook> {
   @override
   Widget build(BuildContext context) {
+    final places = ref.watch(userPlaceProvider);
     Widget content = Center(child: Text("No Place to Show..."));
 
     if (places.isNotEmpty) {
@@ -58,7 +53,7 @@ class _PlacebookState extends State<Placebook> {
               Navigator.of(context).push(
                 MaterialPageRoute(
                   builder: (context) {
-                    return NewPlace(addPlace: addPlace);
+                    return NewPlace();
                   },
                 ),
               );
