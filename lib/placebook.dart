@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:placebook/models/place.dart';
 import 'package:placebook/providers/user_places.dart';
 
 import 'package:placebook/screens/new_place.dart';

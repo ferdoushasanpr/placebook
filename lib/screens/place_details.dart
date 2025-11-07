@@ -10,7 +10,15 @@ class PlaceDetails extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text(place.title)),
-      body: Center(child: Text("Details of the ${place.title}")),
+      body: Container(
+        decoration: BoxDecoration(borderRadius: BorderRadius.circular(16)),
+        padding: EdgeInsets.all(16),
+        child: Image.file(
+          place.image,
+          fit: BoxFit.cover,
+          width: double.infinity,
+        ),
+      ),
     );
   }
 }
