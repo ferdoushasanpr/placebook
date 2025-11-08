@@ -2,7 +2,9 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:placebook/models/place.dart';
 import 'package:placebook/providers/user_places.dart';
+import 'package:placebook/widgets/map_input.dart';
 import 'package:placebook/widgets/place_image.dart';
 
 class NewPlace extends ConsumerStatefulWidget {
@@ -15,6 +17,7 @@ class NewPlace extends ConsumerStatefulWidget {
 class _NewPlaceState extends ConsumerState<NewPlace> {
   final titleController = TextEditingController();
   File? selectedImage;
+  PlaceLocation? selectedLocation;
 
   void selectImage(File image) {
     selectedImage = image;
@@ -25,8 +28,14 @@ class _NewPlaceState extends ConsumerState<NewPlace> {
 
     if (enteredTitle.isEmpty || selectedImage == null) return;
 
-    ref.read(userPlaceProvider.notifier).addPlace(enteredTitle, selectedImage!);
+    ref
+        .read(userPlaceProvider.notifier)
+        .addPlace(enteredTitle, selectedImage!, selectedLocation!);
     Navigator.of(context).pop();
+  }
+
+  void selectLocation(double lat, double lng) {
+    selectedLocation = PlaceLocation(latitude: lat, longitude: lng);
   }
 
   @override
@@ -44,6 +53,8 @@ class _NewPlaceState extends ConsumerState<NewPlace> {
             ),
             SizedBox(height: 16),
             PlaceImage(pickImage: selectImage),
+            SizedBox(height: 16),
+            MapInput(selectLocation: selectLocation),
             SizedBox(height: 16),
             ElevatedButton.icon(
               onPressed: () {

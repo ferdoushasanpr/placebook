@@ -23,6 +23,11 @@ class _PlacebookState extends ConsumerState<Placebook> {
         itemCount: places.length,
         itemBuilder: (context, index) {
           return ListTile(
+            leading: SizedBox(
+              width: 40,
+              height: 40,
+              child: Image.file(places[index].image),
+            ),
             title: Text(
               places[index].title,
               style: Theme.of(context).textTheme.titleMedium!.copyWith(
