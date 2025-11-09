@@ -14,6 +14,7 @@ class MapInput extends StatefulWidget {
 class _MapInputState extends State<MapInput> {
   double? lat;
   double? lng;
+  bool isLoading = false;
 
   void _getCurrentLocation() async {
     Location location = Location();
@@ -38,12 +39,17 @@ class _MapInputState extends State<MapInput> {
       }
     }
 
+    setState(() {
+      isLoading = true;
+    });
+
     locationData = await location.getLocation();
     widget.selectLocation(locationData.latitude!, locationData.longitude!);
 
     setState(() {
       lat = locationData.latitude;
       lng = locationData.longitude;
+      isLoading = false;
     });
   }
 
@@ -66,7 +72,9 @@ class _MapInputState extends State<MapInput> {
       ],
     );
 
-    if (lat != null && lng != null) {
+    if (isLoading) {
+      content = CircularProgressIndicator();
+    } else if (lat != null && lng != null) {
       content = FlutterMap(
         options: MapOptions(
           initialCenter: LatLng(lat!, lng!),
