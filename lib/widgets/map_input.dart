@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:location/location.dart';
+import 'package:placebook/screens/full_map.dart';
 
 class MapInput extends StatefulWidget {
   const MapInput({super.key, required this.selectLocation});
@@ -53,6 +54,14 @@ class _MapInputState extends State<MapInput> {
     });
   }
 
+  void _onSelectLocation(double latitude, double longitude) {
+    widget.selectLocation(latitude, longitude);
+    setState(() {
+      lat = latitude;
+      lng = longitude;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     Widget content = Row(
@@ -73,7 +82,7 @@ class _MapInputState extends State<MapInput> {
     );
 
     if (isLoading) {
-      content = CircularProgressIndicator();
+      content = Center(child: CircularProgressIndicator());
     } else if (lat != null && lng != null) {
       content = FlutterMap(
         options: MapOptions(
@@ -131,7 +140,18 @@ class _MapInputState extends State<MapInput> {
               icon: Icon(Icons.add),
             ),
             TextButton.icon(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (content) {
+                      return FullMap(
+                        isSelecting: true,
+                        onSelectLocation: _onSelectLocation,
+                      );
+                    },
+                  ),
+                );
+              },
               label: Text("Select on Map"),
               icon: Icon(Icons.add),
             ),
