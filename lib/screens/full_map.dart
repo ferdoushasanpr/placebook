@@ -44,10 +44,12 @@ class _FullMapState extends State<FullMap> {
           if (widget.isSelecting)
             IconButton(
               onPressed: () {
-                widget.onSelectLocation!(
-                  _pickedLocation!.latitude,
-                  _pickedLocation!.longitude,
-                );
+                if (_pickedLocation != null) {
+                  widget.onSelectLocation!(
+                    _pickedLocation!.latitude,
+                    _pickedLocation!.longitude,
+                  );
+                }
                 Navigator.pop(context);
               },
               icon: Icon(Icons.save),
@@ -75,6 +77,7 @@ class _FullMapState extends State<FullMap> {
           TileLayer(
             urlTemplate: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
             subdomains: const ['a', 'b', 'c'],
+            userAgentPackageName: "com.example.placebook",
           ),
           MarkerLayer(
             markers: [
