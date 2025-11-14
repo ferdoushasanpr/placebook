@@ -14,6 +14,12 @@ class Placebook extends ConsumerStatefulWidget {
 
 class _PlacebookState extends ConsumerState<Placebook> {
   @override
+  void initState() {
+    super.initState();
+    ref.read(userPlaceProvider.notifier).loadDatabase();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final places = ref.watch(userPlaceProvider);
     Widget content = Center(child: Text("No Place to Show..."));
